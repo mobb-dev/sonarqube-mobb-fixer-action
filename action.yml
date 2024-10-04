@@ -79,7 +79,7 @@ runs:
         SONARQUBE_ORG=${{ inputs.sonarqube-org }} \
         BRANCH=${{ steps.env.outputs.github-head-ref }} \
         REPORT_PATH=report.json \
-        python ./.github/actions/sonarqube-mobb-fixer-action/sonarqube_download_report.py
+        python ./.github/scripts/sonarqube_download_report.py
 
 
         
