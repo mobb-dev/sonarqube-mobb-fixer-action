@@ -84,7 +84,7 @@ runs:
         SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
         SONARQUBE_TOKEN=${{ inputs.sonarqube-token }} \
         SONARQUBE_ORG=${{ inputs.sonarqube-org }} \
-        BRANCH=${{ steps.env.outputs.github-head-ref }} \
+        PULL_REQUEST_ID=${{ github.event.issue.number }} \
         REPORT_PATH=report.json \
         python ./.github/scripts/sonarqube_download_report.py
 
