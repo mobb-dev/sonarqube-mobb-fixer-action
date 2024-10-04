@@ -68,10 +68,10 @@ runs:
         description: "Mobb fix analysis in progress..." 
         
     #wait for 15s as Sonarcloud may not yet have the report ready.    
-    - name: Sleep for 30 seconds
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '30s'
+    # - name: Sleep for 30 seconds
+    #   uses: jakejarvis/wait-action@master
+    #   with:
+    #     time: '30s'
 
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get SonarQube Report
