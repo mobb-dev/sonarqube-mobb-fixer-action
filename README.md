@@ -1,30 +1,39 @@
 # Mobb Fixer for Checkmarx One GitHub Integration
 
-This action is used alongside the Checkmarx One's GitHub Integration (https://checkmarx.com/resource/documents/en/34965-68678-github-cloud.html) where Checkmarx publishes a scan report in the Pull Request's comment section. 
+This action is used alongside the Sonarcloud's native Webhook integration with GitHub where SonarCloud publishes a scan report in the Pull Request's comment section. 
 
 This action will monitor the presence of such a comment and trigger a job to download the SAST report. The SAST report is submitted to the Mobb vulnerability analysis engine, and a fix is presented to the Pull Request's comment section. 
 
 If you are using this on a private repo, the Mobb user to which the API key belongs must have access to the repo and must approve GitHub access for the user on the Mobb platform beforehand.
 
-![image](https://github.com/mobb-dev/cx-mobb-fixer-action/assets/5158535/da9221ef-1dd2-4b6d-b6ba-aa466b51e887)
-
 ## Inputs
 
-## `cx-api-token`
+## `sonarqube-token`
 
-**Required** your Checkmarx API token. [Find out how to get it here](https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html). 
+**Required** your SonarCloud API token. 
+
+
+## `sonarqube-host-url`
+
+**Required** The SonarCloud Host URL. Usually it's `https://sonarcloud.io`
+
+## `sonarqube-project`
+
+**Required** The SonarCloud Project
+
+## `sonarqube-org`
+
+**Required** The SonarCloud Org
 
 ## `mobb-api-token`
 
 **Required** The Mobb API token to use with the action. [Find out how to get it here](https://docs.mobb.ai/mobb-user-docs/administration/access-tokens). 
 
+
 ## `github-token`
 
 **Required** The GitHub api token to use with the action. Usually available as `${{ secrets.GITHUB_TOKEN }}`.
 
-## `cx-timeout`
-
-**Optional** Checkmarx CLI - Timeout for network activity (in seconds). Default: 5 [See Checkmarx Documentations for more details](https://docs.checkmarx.com/en/34965-68626-global-flags.html#UUID-4a3bf436-5bce-714c-5886-e0edf6e1b1bd_N64922ce119eee).
 
 
 ## Example usage
