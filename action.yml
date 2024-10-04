@@ -1,11 +1,11 @@
-name: "cx-mobb-fixer-action"
-description: "Mobb automatic vulnerability fixer action for Checkmarx One"
+name: "sonarqube-mobb-fixer-action"
+description: "Mobb automatic vulnerability fixer action for SonarQube connected via Webhook"
 branding:
   icon: aperture
   color: blue
 inputs:
-  cx-api-token:
-    description: "your Checkmarx credentials"
+  sonarqube-token:
+    description: "your SonarQube credentials"
     required: true
   mobb-api-token:
     description: "Mobb API token"
@@ -13,10 +13,16 @@ inputs:
   github-token:
     description: "GitHub token"
     required: true
-  cx-timeout:
-    description: "Checkmarx CLI timeout"
-    required: false
-    default: '5'
+  sonarqube-host-url:
+    description: "SonarQube Host URL"
+    required: true
+  sonarqube-project:
+    description: "SonarQube Project"
+    required: true
+  sonarqube-org:
+    description: "SonarQube Org"
+    required: true
+
 outputs:
   fix-report-url:
     description: "Mobb fix report URL"
@@ -62,18 +68,29 @@ runs:
         description: "Mobb fix analysis in progress..." 
 
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
-    - name: Get Checkmarx Report
+    - name: Get SonarQube Report
       run: |
-        SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p' | head -n 1 )
-        echo "Scan_ID: $SCAN_ID"
-        wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.4/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
-        tar -xf checkmarx.tar.gz
-        ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
-        ./cx results show --output-name report --report-format json --scan-id $SCAN_ID --timeout ${{ inputs.cx-timeout }} --debug 
+        
+        SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
+        SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
+        SONARQUBE_TOKEN=${{ inputs.sonarqube-token }} \
+        SONARQUBE_ORG=${{ inputs.sonarqube-org }} \
+        BRANCH=${{ steps.env.outputs.github-head-ref }} \
+        REPORT_PATH=report.json \
+        python .github/scripts/sonarqube_download_report.py
+
+        
+        
+        # SCAN_ID=$(echo "$COMMENT" | sed -n 's/.*scans?id=\([^&]*\).*/\1/p' | head -n 1 )
+        # echo "Scan_ID: $SCAN_ID"
+        # wget https://github.com/Checkmarx/ast-cli/releases/download/2.1.4/ast-cli_linux_x64.tar.gz -O checkmarx.tar.gz
+        # tar -xf checkmarx.tar.gz
+        # ./cx configure set --prop-name cx_apikey --prop-value ${{ inputs.cx-api-token }}
+        # ./cx results show --output-name report --report-format json --scan-id $SCAN_ID --timeout ${{ inputs.cx-timeout }} --debug 
         ls -l
         env
-      env:
-        COMMENT: ${{ github.event.comment.body }}
+      # env:
+      #   COMMENT: ${{ github.event.comment.body }}
       shell: bash -l {0}
             
     - id: run-npx-mobb-dev
@@ -81,7 +98,7 @@ runs:
       run: |
         REPO=$(git remote get-url origin)
         REPO=${REPO%".git"}
-        SCANNER=checkmarx
+        SCANNER=sonarqube
         PR_NUMBER=${{ github.event.issue.number }}
         GITHUB_HEAD_REF=${{ steps.env.outputs.github-head-ref }}
         COMMIT_HASH=$(git rev-parse $GITHUB_HEAD_REF) 
