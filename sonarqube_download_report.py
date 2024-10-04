@@ -1,3 +1,5 @@
+from typing import Optional
+
 import json
 import os
 import urllib.parse
@@ -10,10 +12,19 @@ def download_report(
     sonarqube_token: str,
     sonarqube_org: str,
     sonarqube_project: str,
-    branch: str,
+    branch: Optional[str],
+    pull_request_id: Optional[str],
     report_path: str,
 ):
     headers = {"Authorization": f"Bearer {sonarqube_token}"}
+    additional_search_params: dict[str, str] = {}
+
+    if pull_request_id:
+        additional_search_params["pullRequest"] = pull_request_id
+    elif branch:
+        additional_search_params["branch"] = branch
+    else:
+        raise ValueError("Branch or pull request id is required")
 
     issues = _get_all_pages(
         # https://sonarcloud.io/web_api/api/issues/search?deprecated=false
@@ -23,7 +34,7 @@ def download_report(
                 "additionalFields": "_all",
                 "organization": sonarqube_org,
                 "projects": sonarqube_project,
-                "branch": branch,
+                **additional_search_params,
             }
         ),
         headers,
@@ -37,7 +48,7 @@ def download_report(
         + urllib.parse.urlencode(
             {
                 "projectKey": sonarqube_project,
-                "branch": branch,
+                **additional_search_params,
             }
         ),
         headers,
@@ -102,6 +113,7 @@ if __name__ == "__main__":
         os.environ["SONARQUBE_TOKEN"],
         os.environ["SONARQUBE_ORG"],
         os.environ["SONARQUBE_PROJECT"],
-        os.environ["BRANCH"],
+        os.environ.get("BRANCH", ""),
+        os.environ.get("PULL_REQUEST_ID", ""),
         os.environ["REPORT_PATH"],
     )
