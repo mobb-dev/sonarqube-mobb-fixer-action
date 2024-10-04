@@ -80,7 +80,7 @@ runs:
         ls -lahR
         echo "Branch is: ${{ steps.env.outputs.github-head-ref }}"
 
-        echo "Running python command:
+        echo "Running python command:"
         
         # SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
         # SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
