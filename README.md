@@ -1,4 +1,4 @@
-# Mobb Fixer for Checkmarx One GitHub Integration
+# Mobb Fixer for SonarCloud's Webhook based GitHub PR Integration
 
 This action is used alongside the Sonarcloud's native Webhook integration with GitHub where SonarCloud publishes a scan report in the Pull Request's comment section. 
 
