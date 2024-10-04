@@ -10,7 +10,7 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 ## `sonarqube-token`
 
-**Required** your SonarCloud API token. 
+**Required** Your SonarCloud API token. 
 
 
 ## `sonarqube-host-url`
@@ -19,11 +19,11 @@ If you are using this on a private repo, the Mobb user to which the API key belo
 
 ## `sonarqube-project`
 
-**Required** The SonarCloud Project
+**Required** The SonarCloud Project (Project Key)
 
 ## `sonarqube-org`
 
-**Required** The SonarCloud Org
+**Required** The SonarCloud Org (Organization Key)
 
 ## `mobb-api-token`
 
