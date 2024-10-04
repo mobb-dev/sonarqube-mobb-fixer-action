@@ -79,14 +79,32 @@ runs:
 
         ls -lahR
         echo "Branch is: ${{ steps.env.outputs.github-head-ref }}"
+
+        echo "Running python command:
         
-        SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
+        # SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
+        # SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
+        # SONARQUBE_TOKEN=${{ inputs.sonarqube-token }} \
+        # SONARQUBE_ORG=${{ inputs.sonarqube-org }} \
+        # PULL_REQUEST_ID=${{ github.event.issue.number }} \
+        # REPORT_PATH=report.json \
+        # python ./.github/scripts/sonarqube_download_report.py
+
+        python_cmd="SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
         SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
         SONARQUBE_TOKEN=${{ inputs.sonarqube-token }} \
         SONARQUBE_ORG=${{ inputs.sonarqube-org }} \
         PULL_REQUEST_ID=${{ github.event.issue.number }} \
         REPORT_PATH=report.json \
-        python ./.github/scripts/sonarqube_download_report.py
+        python ./.github/scripts/sonarqube_download_report.py"
+        
+        # Print the command
+        echo "Executing the following python cmd to download JSON report:"
+        echo "$python_cmd"
+        
+        # Execute the command
+        eval "$python_cmd"
+
 
         ls -l
         env
