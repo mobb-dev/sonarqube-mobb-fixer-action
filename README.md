@@ -42,37 +42,5 @@ Create a file under the path `.github/workflow/mobb.yml`.
 
 A sample content of the workflow file: 
 ```
-# Mobb/Checkamrx Fixer on pull requests
-# This workflow defines the needed steps to run Checkmarx on every pull request and pass the results to Mobb Fixer.
-#
-# Secrets in use (add your missing ones):
-# CX_API_TOKEN - Your Checkmarx credentials (find how to get it here: https://checkmarx.com/resource/documents/en/34965-68775-generating-a-refresh-token--api-key-.html)
-# MOBB_API_TOKEN - Your mobb API Token (find out how to get it here: https://docs.mobb.ai/mobb-user-docs/administration/access-tokens)
-# GITHUB_TOKEN - Automatically set by GitHub
-
-name: "Mobb/Checkmarx"
-
-on:
-  issue_comment:
-    types: [created]
-
-jobs:
-  report-and-fix:
-    name: Get Report and Fix
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body,'Checkmarx One – Scan Summary & Details') }} # This makes sure that the comment originates from a PR and not an issue comment
-    runs-on: 'ubuntu-latest'
-    timeout-minutes: 360
-    permissions:
-      pull-requests: write
-      statuses: write
-      contents: read
-    steps:
-      - name: Run Mobb GH Fixer monitor for CxOne Comments
-        if: always()
-        uses: mobb-dev/cx-mobb-fixer-action@v1.5
-        with:
-          cx-api-token: ${{ secrets.CX_API_TOKEN  }}
-          mobb-api-token: ${{ secrets.MOBB_API_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          cx-timeout: 20000
+coming soon
 ```
