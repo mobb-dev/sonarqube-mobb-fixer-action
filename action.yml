@@ -78,6 +78,7 @@ runs:
       run: |
 
         ls -lahR
+        echo "Branch is: ${{ steps.env.outputs.github-head-ref }}"
         
         SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
         SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
