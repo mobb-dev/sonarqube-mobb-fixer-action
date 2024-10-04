@@ -70,6 +70,8 @@ runs:
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get SonarQube Report
       run: |
+
+        ls -lahR
         
         SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
         SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
