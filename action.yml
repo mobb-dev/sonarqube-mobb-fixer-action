@@ -76,20 +76,11 @@ runs:
     # Extract the scan ID from the Checkmarx comment and use it to generate a Checkmarx json report
     - name: Get SonarQube Report
       run: |
-
-        ls -lahR
+        
         echo "Branch is: ${{ steps.env.outputs.github-head-ref }}"
 
         echo "Running python command:"
         
-        # SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
-        # SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
-        # SONARQUBE_TOKEN=${{ inputs.sonarqube-token }} \
-        # SONARQUBE_ORG=${{ inputs.sonarqube-org }} \
-        # PULL_REQUEST_ID=${{ github.event.issue.number }} \
-        # REPORT_PATH=report.json \
-        # python ./.github/scripts/sonarqube_download_report.py
-
         python_cmd="SONARQUBE_HOST_URL=${{ inputs.sonarqube-host-url }} \
         SONARQUBE_PROJECT=${{ inputs.sonarqube-project }} \
         SONARQUBE_TOKEN=${{ inputs.sonarqube-token }} \
@@ -105,11 +96,9 @@ runs:
         # Execute the command
         eval "$python_cmd"
 
-
         ls -l
         env
-      # env:
-      #   COMMENT: ${{ github.event.comment.body }}
+
       shell: bash -l {0}
             
     - id: run-npx-mobb-dev
